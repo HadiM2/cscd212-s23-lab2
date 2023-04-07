@@ -4,12 +4,12 @@ import java.util.Objects;
 
 public class Television extends Object implements Comparable<Television> {
 
-    private boolean fourK;
-    private String make;
-    private String model;
-    private int resolution;
-    private int screenSize;
-    private boolean smart;
+    private final boolean fourK;
+    private final String make;
+    private final String model;
+    private final int resolution;
+    private final int screenSize;
+    private final boolean smart;
 
     public Television(final String make, final String model, final boolean smart, final int screenSize, final int resolution) {
 
@@ -21,10 +21,11 @@ public class Television extends Object implements Comparable<Television> {
         this.smart = smart;
         this.screenSize = screenSize;
         this.resolution = resolution;
+        this.fourK = resolution == 2160;
     }
     //CHECK THIS CODEEE
     public Television(final String model, final boolean smart, final int screenSize, final int resolution, final String make) {
-        Television television = new Television(make, model, smart, screenSize, resolution);
+        this(make, model, smart, screenSize, resolution);
     }
     /////?????
     public int getScreenSize() {
@@ -44,10 +45,10 @@ public class Television extends Object implements Comparable<Television> {
 
     @Override
     public String toString() {
-        if (!this.smart) {
-            return "Make-Model: " + this.make + " - " + this.model + "," + this.screenSize + " Inch TV with" + this.resolution + "resolution";
+        if (!this.smart || !this.fourK) {
+            return "Make-Model: " + /*(true ? "this will print": "this will never print")*/  this.make + " - " + this.model + "," + this.screenSize + " Inch TV with" + this.resolution + "resolution";
         }
-        else {
+        else if (smart && this.fourK) {
             return "Make-Model: " + this.make + " - " + this.model + "," + this.screenSize + " Inch Smart TV with" + this.resolution + "resolution";
         }
     }
@@ -85,7 +86,7 @@ public class Television extends Object implements Comparable<Television> {
 
     @Override
     public int compareTo(final Television another) {
-        if(another == null){
+        if (another == null) {
 
             throw new IllegalArgumentException("Television:compareTo: another can't be null");
         }
