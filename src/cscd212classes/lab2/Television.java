@@ -1,15 +1,15 @@
 package cscd212classes.lab2;
 
-public class Television extends Object implements Comparable<Television>{
+public class Television extends Object implements Comparable<Television> {
 
-    private final boolean fourK;
-    private final String make;
-    private final String model;
-    private final int resolution;
-    private final int screenSize;
-    private final boolean smart;
+    private  boolean fourK = false;
+    private  String make = "";
+    private  String model = "";
+    private  int resolution = 0;
+    private  int screenSize = 0;
+    private  boolean smart = false;
 
-    public Television(){
+    public Television() {
 
     }
     public Television(final String make, final String model, final boolean smart, final int screenSize, final int resolution){
@@ -53,20 +53,20 @@ public class Television extends Object implements Comparable<Television>{
     @Override
     public boolean equals(Object obj) {
         //or could be if(this == obj)
-        if (obj.equals(this)){
+        if (obj.equals(this)) {
             return true;
         }
-        if (obj == null){
+        if (obj == null) {
             return false;
         }
-        if (!(obj instanceof Television)){
+        if (!(obj instanceof Television)) {
             return false;
         }
-        Television another = (Television)obj;
+        Television another = (Television) obj;
         boolean cmMake = this.make.equals(another.make);
         boolean cmModel = this.model.equals(another.model);
-        boolean cmScreenSize = ((int)(this.screenSize * 100) == (int)(another.screenSize * 100));
-        boolean cmRes = ((int)(this.resolution * 100) == (int)(another.resolution * 100));
+        boolean cmScreenSize = ((int) (this.screenSize * 100) == (int) (another.screenSize * 100));
+        boolean cmRes = ((int) (this.resolution * 100) == (int) (another.resolution * 100));
         boolean cmSmart = this.smart == another.smart;
         boolean cmFourK = this.fourK == another.fourK;
 
@@ -74,6 +74,10 @@ public class Television extends Object implements Comparable<Television>{
             return false;
         }
         return true;
+    }
+    @Override
+    public int compareTo(final Television another){
+
     }
 
 }
