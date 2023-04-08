@@ -7,20 +7,25 @@ import java.util.Comparator;
 public class TelevisionResolutionMakeDescendingComparator extends Object implements Comparator<Television> {
     public int compare(final Television t1, final Television t2) {
 
-        int cmMake = t1.getMake().compareTo(t2.getMake());
-        int cmRes = Integer.compare(t1.getResolution(), t2.getResolution());
+        if (t1 == null || t2 == null) {
+            throw new IllegalArgumentException("null parameter in TelevisionResolutionMakeDescendingComparator");
+        }
+        int cmMake = t2.getMake().compareTo(t1.getMake());
+        int cmRes = t2.getResolution() - t1.getResolution();
+        //^ works, this doesn't in this case: int cmRes = Integer.compare(t2.getResolution(), t1.getResolution());
 
-        if (cmMake == 0) {
-            if (cmRes == 0) {
-                return cmRes;
+        if (cmRes == 0) {
+            if (cmMake == 0) {
+                return cmMake;
             }
             else {
-                return cmRes;
+                return cmMake;
             }
         }
         else {
-            return cmMake;
+            return cmRes;
         }
     }
+
 
 }

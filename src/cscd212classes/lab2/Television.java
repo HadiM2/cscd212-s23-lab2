@@ -13,15 +13,15 @@ public class Television extends Object implements Comparable<Television> {
 
     public Television(final String make, final String model, final boolean smart, final int screenSize, final int resolution) {
 
-        if (make.isBlank() || model.isBlank() || screenSize < 32 || resolution < 720) {
-            throw new IllegalArgumentException("Something went wrong with Television constructor");
+        if (make == null || model == null || screenSize < 32 || resolution < 720) {
+            throw new IllegalArgumentException("Invalid parameter in constructor");
         }
         this.make = make;
         this.model = model;
         this.smart = smart;
         this.screenSize = screenSize;
         this.resolution = resolution;
-        this.fourK = resolution == 2160;
+        this.fourK = resolution == 2160; //if the resolution is 2160 the 4k is true and means the tv is 4k
     }
     //CHECK THIS CODEEE
     public Television(final String model, final boolean smart, final int screenSize, final int resolution, final String make) {
@@ -45,18 +45,27 @@ public class Television extends Object implements Comparable<Television> {
 
     @Override
     public String toString() {
-        if (!this.smart || !this.fourK) {
-            return "Make-Model: " + /*(true ? "this will print": "this will never print")*/  this.make + " - " + this.model + "," + this.screenSize + " Inch TV with" + this.resolution + "resolution";
+        if (!this.smart && !this.fourK) {
+            return /*(true ? "this will print": "this will never print")*/  this.make + "-" + this.model + ", " + this.screenSize + " inch tv with " + this.resolution + " resolution";
         }
-        else if (smart && this.fourK) {
-            return "Make-Model: " + this.make + " - " + this.model + "," + this.screenSize + " Inch Smart TV with" + this.resolution + "resolution";
+        else if (this.smart && this.fourK) {
+            return  this.make + "-" + this.model + ", " + this.screenSize + " inch smart tv with 4K" + " resolution";
+        }
+        else if (this.smart && !this.fourK) {
+            return this.make + "-" + this.model + ", " + this.screenSize + " inch smart tv with " + this.resolution + " resolution";
+        }
+        else if (!this.smart && this.fourK) {
+            return this.make + "-" + this.model + ", " + this.screenSize + " inch tv with 4K" + " resolution";
+        }
+        else {
+            return null;
         }
     }
 
     @Override
     public boolean equals(final Object obj) {
         //or could be if(this == obj)
-        if (obj.equals(this)) {
+        if (obj == this) {
             return true;
         }
         if (obj == null) {
@@ -66,14 +75,15 @@ public class Television extends Object implements Comparable<Television> {
             return false;
         }
         Television another = (Television) obj;
+
         boolean cmMake = this.make.equals(another.make);
         boolean cmModel = this.model.equals(another.model);
-        boolean cmScreenSize = ((int) (this.screenSize * 100) == (int) (another.screenSize * 100));
+        boolean cmScreenSize = this.screenSize == another.screenSize;
         boolean cmRes = ((int) (this.resolution * 100) == (int) (another.resolution * 100));
         boolean cmSmart = this.smart == another.smart;
         boolean cmFourK = this.fourK == another.fourK;
 
-        if (!(cmMake && cmModel && cmScreenSize && cmRes && cmSmart && cmFourK)) {
+        if ((!cmMake || !cmModel || !cmScreenSize || !cmRes || !cmSmart || !cmFourK)) {
             return false;
         }
         return true;
@@ -86,17 +96,22 @@ public class Television extends Object implements Comparable<Television> {
 
     @Override
     public int compareTo(final Television another) {
-        if (another == null) {
 
-            throw new IllegalArgumentException("Television:compareTo: another can't be null");
+        if (another == null) {
+            throw new IllegalArgumentException("null parameter in the compareTo method");
         }
+
         int cmMake = this.make.compareTo(another.make);
         int cmModel = this.model.compareTo(another.model);
-        int cmScreenSize = Integer.compare(this.screenSize, another.screenSize);
+        //int cmScreenSize = Integer.compare(this.screenSize, another.screenSize);
+        int cmScreenSize = this.screenSize - another.screenSize;
 
         if (cmMake == 0) {
             if (cmModel == 0) {
                 if (cmScreenSize == 0) {
+                    return cmScreenSize;
+                }
+                else {
                     return cmScreenSize;
                 }
             }
@@ -107,8 +122,6 @@ public class Television extends Object implements Comparable<Television> {
         else {
             return cmMake;
         }
-
-        return -1;
     }
 
 }
